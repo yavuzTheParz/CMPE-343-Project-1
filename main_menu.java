@@ -26,7 +26,7 @@ import java.util.*;
  * @since 1.0
  */
 
-class main_menu
+public class main_menu
 {
 
     private static final String HOME       = "\u001B[H";
@@ -45,17 +45,28 @@ class main_menu
      * Program entry point.
      *
      * @param args command-line arguments (unused)
+     * 
      */
     public static void main(String[] args)
     {
         //writeMenu();
         playAnimation();  
     }
+    /**
+    * Clears the console
+    */ 
     public static void clearConsole() 
     {
      	System.out.print("\033[H\033[2J");
     	System.out.flush();
     }
+    /** 
+    * @see #A() 
+    * @see #B()
+    * @see #C()
+    * @see #D()
+    * Prints out the main the menu, handles the input and calls functions
+    */
     public static void writeMenu()
     {
         while(true)
@@ -94,137 +105,361 @@ class main_menu
         }
         
     }
-    public static void playAnimation() {
-    List<String> frames = getFrames();
 
-    int fps = 10;
-    long frameTime = 1000 / fps;
+    /** 
+    * Prints a set of string with a constant delay to play animation
+    */
+    private static void playAnimation() 
+    {
+        List<String> frames = getFrames();
 
-    // Terminali her şartta eski haline döndür
-    try {
-        // İmleci gizle, rengi kırmızı yap
-        System.out.print(HIDE_CURSOR);
-        System.out.print(ANSI_RED);
+        int fps = 10;
+        long frameTime = 1000 / fps;
 
-        int i = 0;
-        for (String frame : frames) {
-            long t0 = System.nanoTime();
+        
+        try 
+        {
+            //Hide the cursor, make the color red
+            System.out.print(HIDE_CURSOR);
+            System.out.print(ANSI_RED);
 
-            // Temizle + home (önce temizle, sonra home)
-            System.out.print(CLEAR);
-            System.out.print(HOME);
+            int i = 0;
+            for (String frame : frames) {
+                long t0 = System.nanoTime();
 
-            if(i == 12)
-                System.out.print(ANSI_CYAN);
-   
+                System.out.print(CLEAR);
+                System.out.print(HOME);
 
-            // Frame’i yaz
-            System.out.print(frame);
-            System.out.flush();
+                if(i == 17)
+                    System.out.print(ANSI_CYAN);
 
-            long elapsedMs = (System.nanoTime() - t0) / 1_000_000;
-            long sleepMs = Math.max(0, frameTime - elapsedMs);
-            try {
-                Thread.sleep(sleepMs);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break; // animasyonu kibarca kes
+                //print the frame
+                System.out.print(frame);
+                System.out.flush();
+
+                long elapsedMs = (System.nanoTime() - t0) / 1_000_000;
+                long sleepMs = Math.max(0, frameTime - elapsedMs);
+                try {
+                    Thread.sleep(sleepMs);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break; // break from the animation
+                }
+                i++;
+
             }
-            i++;
 
-        }
+                // Animation is over
+                System.out.print(ANSI_RESET);
+                System.out.print(SHOW_CURSOR);
+                System.out.println("by:  Yavuz Selim Yaşar, Volkan Dinç,  Kemal Ege İncereis,  İdil Zeren Çoban");
+            } 
+            finally
+            {
+                // Clean the terminal no matter what
+                System.out.print(ANSI_RESET);
+                System.out.print(SHOW_CURSOR);
+                System.out.flush();
+            }
 
-        // Animasyon bitti: renk resetle, imleci göster, byline normal renkte
-        System.out.print(ANSI_RESET);
-        System.out.print(SHOW_CURSOR);
-        System.out.println("by:  Yavuz Selim Yaşar, Volkan Dinç,  Kemal Ege İncereis,  İdil Zeren Çoban");
-    } finally {
-        // Her koşulda terminal toparlansın (exception vs.)
-        System.out.print(ANSI_RESET);
-        System.out.print(SHOW_CURSOR);
-        System.out.flush();
+            
+            writeMenu();
     }
-
-    // Menüye geç
-    writeMenu();
-}
 
     
 
-
-
+    /**
+     * @return Returns an array of strings to print 
+     * @see #playAnimation()
+     * 
+     */
     private static List<String> getFrames() 
     {
 
-        String banner = """
-        /$$       /$$  /$$$$$$$$ /$$$       /$$$$$$    /$$$$$$ /$$      /$$ /$$$$$$$$
-        | $$  /$ | $$| $$$_____/| $$       /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/
-        | $$ /$$$| $$| $$$      | $$      | $$  \\__/| $$     || $$ $  /$$$$| $$$$$       
-        | $$/$$ $$ $$| $$$$$$   | $$      | $$      | $$  | $$| $$ $$/$$ $$| $$$$$   
-        | $$$$_  $$$$| $$$__/   | $$      | $$      | $$  | $$| $$  $$$| $$| $$__/   
-        | $$$/ \\   $$| $$       | $$      | $$    $$| $$  | $$| $$\\  $ | $$| $$      
-        | $$/   \\   $| $$$$$$$$ | $$$$$$$$|  $$$$$$/|  $$$$$$/| $$ \\/  | $$| $$$$$$$$
-        |__/     \\__/|________/ |________/ \\______/  \\______/ |__/     |__/|________/
-""";
-
         String[] f = new String[] {
             //First 7 frames
-               """                                                                                                    
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                        
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                        .                                   
-                                                                    =%#++%@.                                
-                                                        .+**#@#*+**==*=-++*#%#*+*@@-                        
-                                                +**#%%#*++======++**#*%%######%%@@@*:                      
-                                            =+@@%%#*+%%#**++=====+****%%%###+*####%%%%%##=-                 
-                                    .=@@%%#**+=:.:#@%#*+++++++*#*#%@@@@+:--+**####%##*+%#*               
-                        .-@@@@#+%@@@%%*#+:::       *@%#+===++**##%@@@@@@            : .:::*               
-                    .*@@@@@%%%%%+:::-.           .#@%#*++++++*###%@@@@@-                                  
-                                                .*@%%#**+++++*###%@@@@@@-                                  
-                                            =#@@@%#*+++****#*##@@@@@@@#                                  
-                                        %@@@@@@@%%**********##*%@@@@@@@@                                  
-                                        @%%%#*+=--=++++****###%@@@@@@@@#                                 
-                                        +@@@%%#######**+++++*###%@@@@@@@@@#.                               
-                                    =@@@@@@%#**+++++++++**######%@@@@@@@%:                                
-                                :-#@@@%%##************#####**#%%%%@%%%%%.                                
-                                    #@@%%%##########*++===+++*#%%%%%%%%%%                                 
-                                    #@@@%%%%####**+===+++++**#%@@%%%%%%%%                                 
-                                    :@@@@@@%##***+++++++++**##%@@@@@@%%%%+                                 
-                                    .@@@@@@%##*****+++******###*@@@@@@@@%%                                  
-                                    %@@@@@%%%###***********##*  =%@@@@@@@-                                  
-                                :%@@@@@@%%%%%########**####-    +@@@@@#                                   
-                                :-===+*##%%%%%%%%%%########+      :%@@@                                    
-                                        -*#%@@@%%%%%######        =@@+                                    
-                                            -*@@@@@@@%%####.         *@                                     
-                                            =*=+@@@@%%##%          -.                                     
-                                                +@@@@@%%#.                                                 
-                                                +%@@@@%#                                                  
-                                                -#@@@%                                                   
-                                                    -#@@.                                                   
-                                                    =@@                                                    
-                                                    #*                                                    
-                                                    .                                                     
-                                                                                                    
+            """
+                                                                                                
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                
+                         
+%@#=:                      
+#%@%%%%+--                 
+#######**%#*.              
+...:---:-=.=-              
+%%%#+----                                               
+                                                      
+                                                      
+                                                      
+                                                  
+                                               
+                                                  
+                                              
+                                                
+                                                                
+                                                                   
+                                                               
+                                                                 
+                                                                    
+                                                                          
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
             """,
+            """                                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                               
+                                      
+.                              
++-.                               
+@@%+-.                       
+@%++@@%@@@@@@@@%#%+=-                 
+@%%*%%#######%%###++#%#               
+@%#*%%%#%##%%*==--:-=--:              
+@#  .%@@@%%%%#------                           
+                                
+                                                       
+                                                         
+                                                           
+                                                             
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+            """,
+            """                                                                                                    
+                                                    
+                                                    
+    @                                                 
+    .@@%                                               
+    .@@@@+                                             
+    %@@@@@@-                                           
+-@@@@@@@@@*                                          
+-@@@@@@@@@%%@%:                                        
++@@@@@@@@@@@%%%%%.                                       
+=%@@@@@%%%%%%%%%%%%%%%.                                      
+*@@@@@@@%%%%%%%%%%%%%#                                      
+#@@@@@@@@@%%%%##%%%%%*                                     
+.%@@@@@@@%@@@@@%%%%%%%%+   #+                               
+-@@@@%%%%%%%%%%%%@%%%%%%-+#%#                               
+=@@@@@@@%%%%%%##%%%%@@%%%@%#+++                              
+-*@@@@@@@@@@@@@@@@%%%%%%%%%*=--                              
+:%@@@%@@%%%%%%%%@@@@@@@@%*+=-:                             
+.%@@%%%%@@@@@@@@@@@@@@@#+==-:                             
++@@@@@@@@@@@@@@@%%@@@%+---+:                             
+.*@@@@@@@@@@%%%@@@@@#==-=:                              
+#@@@@@@@@%%%%@@@@@+=+=:                               
+-@@@@@@%%%%%%%@@@%+++-                                
+@@@@%%%%%%%%%@@%%*=+                                 
+.@@@@%%%%%%%%%%@%@*=-                                 
+*@@@%%%%%%%%%%%%%%#+.    ***=                         
+-+*%=.  .  ..:=========++=:: +@@@@%#%#=--                  
+=@@@@@@@@@@@@@@@@%%%##*+##%%%%%@@@@@%%%%%%%%@#*:               
+.:---::::.        %%%%%%%%%%%%%%%%#*--..:-%-              
++*%%%%%*#%#%%@%%#*##%%%%%+-                         
+=%%*#%%@+   +######*%%*++=.                           
+            :@%@#*+*.                                 
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+            """,
+            """                                                                                                    
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                -.                                      
+                                -#@@.                                     
+                            :#@@@@:                                     
+                        .=*%%@@@@@@:                                     
+                    .=*%@@@@@@@@@@@=                                     
+                :+#@@@@@@@@@@@@@@@@#                                     
+            *@@@@@@@@@@@@@@@@@@@@@@@          ..                         
+            .@@@@@@@@@@%%%%%%%%@@@@@    .:-=*#%=                         
+            %@@@@@@@%%%%%%%%%%%%@@@. =*######%=                         
+            @@@@@@@@@%%%%%%%%%%%@@@+-+++*****#=                         
+            =%@@@%%%%%%%%%%%%%%%%%@@*===++++++*:                         
+            @@@@@@%%%%%%%%%%@%%%%%%%@@*+========+.                         
+            %@@@%%%####%%%%%%%%%%%%%@*++=======-                          
+            :@@@@@@@@@%%%%%%%%@%%%%%*===+=====-                          
+            .@@%%%%%%%%%@@@@@%%@@%%@*=======-=:                          
+            :@@@@%%%%%%%%%%%@@@@@@%@*+======--                           
+                :%@@@@@@@@@@@@@@@@@@%#*+======:                           
+                    %@@@@@@@@@@@@@@@@#+=====++-                            
+                    *@@@@@@@@@@@@@@@@#+=++++- =#=                          
+.==.           -===-=+***+#@@@@@@@%@@@@@@@@#++++*@@@@@%#**-:.                  
+.*@@@@@@@@@@@@@@@@%%%%%%%%%#%#%%%%%%%@@@@@@@%%@%%+%@@@@@%##%%%%#*%#*.               
+:-===++++==--::.:::::::::::.::-+**#%%%%%%%@@%#%###++*#####+=:-...:*-              
+                        +*%%%@+=+#%%@%%#*#%###*+-:                         
+                    .=%%###*.   .*#%%****:                                
+                                .%%@:                                     
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+            """,
+            """                                                                                                    
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                    +*%@*.                                 
+                        -#%@@@@@@@@@@@@%#*##*==+++*%*--=%#*+:+%@%=                        
+                    .+@@@@@@%%%@@@@@@@@@@@#%*=+=++*%%##%#%%%%%@@*+#*--                  
+        :=%@*--:-+%##%@@@@@@@@@@@@@@@%%@@@@@@@@#**=+@@#+#%%##**++*%%%%%##%:.              
+    .%@@@@@@%%%%%#####*-:..*@@%*+====+*%%@%%%%@@@%*%@%##%%*+==++++=:---:::=%#              
+                                        @@@##**%@@#%%%@%   :*+                             
+                                    +#-         #%*.                                    
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+            """,
+            
             """                                                                                                    
                                                                                                         
                                                                                                         
@@ -619,7 +854,7 @@ class main_menu
                                                                                                     
                                                                                                     
             """,
-            //Second 7 frames
+            //welcome frames
             """                                                                                                    
                                                                                                     
                                                                                                     
@@ -983,7 +1218,8 @@ ____/ |________/ \\______/  \\______/ |__/     |__/|________/
                                                                                                     
                                                                                                     
                                                                                                     
-            """,            """                                                                                                    
+            """,            
+            """                                                                                                    
 
 
 
@@ -1067,9 +1303,9 @@ ____/ |________/ \\______/  \\______/ |__/     |__/|________/
     }
 
         /**
-         * Connect Four – Java Console Edition (ASCII UI)
+         * Connect Four (ASCII UI)
          *
-         * Features required by the assignment:
+         * Features:
          *  - Option D in the main menu starts Connect Four [9].
          *  - Board size selection: 5x4, 6x5, or 7x6 (Cols x Rows).
          *  - Game mode: Single-player (vs. random-move computer) or Two-players.
@@ -1081,10 +1317,9 @@ ____/ |________/ \\______/  \\______/ |__/     |__/|________/
          * Compile:  javac ConnectFour.java
          * Run:      java ConnectFour
          */
-        // ====== ANSI helpers (colors + clear screen) ======
         
 
-        // Board symbols
+        // Symbols
         private static final char EMPTY = '.';
         private static final char P1 = 'X';
         private static final char P2 = 'O';
@@ -1092,8 +1327,20 @@ ____/ |________/ \\______/  \\______/ |__/     |__/|________/
         private static final Scanner SC = new Scanner(System.in);
         private static final Random RNG = new Random();
 
-        // ====== Game bootstrap ======
-        private static void startConnectFour() {
+        /**
+         * Initials variables, calls required functions and creates a game loop
+         * @see #pickBoardSize
+         * @see #pickStarter
+         * @see #clearAndBanner
+         * @see #printGameHeader(int, int, char, char, String)
+         * @see #printBoard(char[][])
+         * @see #hasConnectFour(char[][], char)
+         * @see #waitForEnter
+         * @see #switchPlayer(char)
+         */
+
+        private static void startConnectFour() 
+        {
             int[] size = pickBoardSize(); // [cols, rows]
             int cols = size[0], rows = size[1];
             char[][] board = new char[rows][cols];
@@ -1210,7 +1457,7 @@ ____/ |________/ \\______/  \\______/ |__/     |__/|________/
             }
         }
 
-        // ====== Menu helpers ======
+
         private static int[] pickBoardSize() {
             while (true) {
                 clearAndBanner();
